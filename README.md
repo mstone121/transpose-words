@@ -14,10 +14,12 @@ A VS Code extension that adds the `transpose-words` command.
 
 ## Known Issues
 
-None. It's perfect.
+- No custom regex
+- Possible issue: cursor must be at front of second word
 
 ## Release Notes
 
 ### 0.1.0
 
+05/28/2020
 Initial release

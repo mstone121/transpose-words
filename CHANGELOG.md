@@ -4,4 +4,4 @@ All notable changes to the "transpose-words" extension will be documented in thi
 
 ## [Unreleased]
 
-- Initial release
+- Initial release 05/28/2020
