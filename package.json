@@ -10,13 +10,13 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:transpose-words.helloWorld"
+    "onCommand:transpose-words.transposeWords"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "transpose-words",
+        "command": "transpose-words.transposeWords",
         "title": "Transpose Words"
       }
     ]

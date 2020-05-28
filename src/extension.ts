@@ -1,27 +1,47 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
+import { TextEditor, TextEditorEdit, Selection } from "vscode";
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+const wordRegex = /[A-Za-z0-9]+/;
+
 export function activate(context: vscode.ExtensionContext) {
+  context.subscriptions.push(
+    vscode.commands.registerTextEditorCommand(
+      "transpose-words.transposeWords",
+      (textEditor: TextEditor, edit: TextEditorEdit) => {
+        const document = textEditor.document;
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "transpose-words" is now active!');
+        textEditor.selections.forEach((selection: Selection) => {
+          if (!selection.isEmpty) {
+            return;
+          }
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('transpose-words.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
+          const forwardRange = document.getWordRangeAtPosition(
+            selection.active,
+            wordRegex
+          );
 
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from transpose-words!');
-	});
+          if (!forwardRange || forwardRange.start.character === 0) {
+            return;
+          }
 
-	context.subscriptions.push(disposable);
+          const backwardRange = document.getWordRangeAtPosition(
+            forwardRange.start.translate({ characterDelta: -1 }),
+            wordRegex
+          );
+
+          if (!backwardRange) {
+            return;
+          }
+
+          const forwardWord = document.getText(forwardRange);
+          const backwardWord = document.getText(backwardRange);
+
+          edit.replace(forwardRange, backwardWord);
+          edit.replace(backwardRange, forwardWord);
+        });
+      }
+    )
+  );
 }
 
-// this method is called when your extension is deactivated
 export function deactivate() {}
