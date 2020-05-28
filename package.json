@@ -16,8 +16,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "transpose-words.helloWorld",
-        "title": "Hello World"
+        "command": "transpose-words",
+        "title": "Transpose Words"
       }
     ]
   },
